@@ -1,0 +1,43 @@
+# Archivos y carpetas de entorno local
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Archivos temporales o de compilación
+*.log
+*.pot
+*.mo
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Directorios de dependencias y cachés
+node_modules/
+dist/
+build/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+*.egg
+
+# Archivos de herramientas de desarrollo
+.vscode/
+.idea/
+.mypy_cache/
+pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Archivos de Git
+.git/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
