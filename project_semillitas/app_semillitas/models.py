@@ -53,8 +53,8 @@ class Ejercicio(models.Model):
         unique_together = ('evaluacion', 'palabra')
 
 class UsuarioPalabras(models.Model):
-    usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT)
-    palabra = models.ForeignKey(Palabra,on_delete=models.PROTECT)
+    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    palabra = models.ForeignKey(Palabra,on_delete=models.CASCADE)
     fecha_recogida = models.DateTimeField(auto_now_add=True)
     class Meta:
         unique_together = ('usuario', 'palabra')
@@ -63,13 +63,13 @@ class UsuarioPalabras(models.Model):
     
     
 class EvaluacionUsuarios(models.Model):
-    evaluacion = models.ForeignKey(Evaluacion,on_delete=models.PROTECT)
-    usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT)
+    evaluacion = models.ForeignKey(Evaluacion,on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
     fecha =models.DateTimeField(auto_now_add=True)
 
 class ResultadoEvaluaciones(models.Model):
-    evaluacion = models.ForeignKey(Evaluacion,on_delete=models.PROTECT)
-    usuario = models.ForeignKey(Usuario,on_delete=models.PROTECT)
+    evaluacion = models.ForeignKey(Evaluacion,on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
     puntaje = models.IntegerField(default=20)
     completado = models.BooleanField(default=False)
     fecha = models.DateTimeField(auto_now_add=True)
