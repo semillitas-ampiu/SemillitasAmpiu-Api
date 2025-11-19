@@ -156,6 +156,10 @@ class EvaluacionUsuariosSerializer(serializers.ModelSerializer):
 
 
 class ResultadoEvaluacionesSerializer(serializers.ModelSerializer):
+    usuario = serializers.PrimaryKeyRelatedField(
+        queryset=Usuario.objects.all(),
+        required=True 
+    )
     class Meta:
         model = ResultadoEvaluaciones
         fields = '__all__'
