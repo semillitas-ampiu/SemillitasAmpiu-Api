@@ -3,15 +3,28 @@ services:
     build: .
     container_name: semillitas-api
     ports:
-     - "8000:8000"
+      - '8000:8000'
     environment:
-      SUPABASE_DB_NAME: ${SUPABASE_DB_NAME}
-      SUPABASE_DB_USER: ${SUPABASE_DB_USER}
-      SUPABASE_DB_PASSWORD: ${SUPABASE_DB_PASSWORD}
-      SUPABASE_DB_HOST: ${SUPABASE_DB_HOST}
-      SUPABASE_DB_PORT: ${SUPABASE_DB_PORT}
+      NEON_DB_NAME: ${NEON_DB_NAME}
+      NEON_DB_USER: ${NEON_DB_USER}
+      NEON_DB_PASSWORD: ${NEON_DB_PASSWORD}
+      NEON_DB_HOST: ${NEON_DB_HOST}
+      NEON_DB_PORT: ${NEON_DB_PORT}
       SECRET_KEY: ${SECRET_KEY}
-      EMAIL_HOST_USER: ${EMAIL_HOST_USER}
-      EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
     env_file:
-     - .env
+      - .env
+    volumes:
+      - ./project_semillitas:/app/project_semillitas
+    develop:
+      watch:
+        - action: sync
+          path: ./project_semillitas
+          target: /app/project_semillitas
+          ignore:
+            - __pycache__/
+            - '*.pyc'
+            - '*.pyo'
+            - db.sqlite3
+        - action: rebuild
+          path: ./requirements.txt
