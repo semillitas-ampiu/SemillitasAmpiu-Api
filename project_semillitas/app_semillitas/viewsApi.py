@@ -158,7 +158,7 @@ class UsuarioPalabrasList(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(
-            {'mensaje': 'UsuarioPalabras creado correctamente.', 'data': serializer.data},
+            {'mensaje': 'Recoleccion creado correctamente.', 'data': serializer.data},
             status=status.HTTP_201_CREATED
         )
 
@@ -175,7 +175,7 @@ class EvaluacionUsuariosList(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(
-            {'mensaje': 'EvaluacionUsuarios creado correctamente.', 'data': serializer.data},
+            {'mensaje': 'Evaluado creado correctamente.', 'data': serializer.data},
             status=status.HTTP_201_CREATED
         )
 
@@ -187,12 +187,14 @@ class ResultadoEvaluacionesList(generics.ListCreateAPIView):
     queryset = ResultadoEvaluaciones.objects.all()
     serializer_class = ResultadoEvaluacionesSerializer
     permission_classes = [AllowAny] 
+    filter_backends = [DjangoFilterBackend] 
+    filterset_fields = ['usuario']
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(
-            {'mensaje': 'ResultadoEvaluaciones creado correctamente.', 'data': serializer.data},
+            {'mensaje': 'Resultado creado correctamente.', 'data': serializer.data},
             status=status.HTTP_201_CREATED
         )
 
