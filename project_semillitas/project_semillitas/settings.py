@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'project_semillitas.wsgi.application'
 DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':os.environ.get('SUPABASE_DB_NAME'),
-        'USER': os.environ.get('SUPABASE_DB_USER'),
-        'PASSWORD': os.environ.get('SUPABASE_DB_PASSWORD'),
-        'HOST': os.environ.get('SUPABASE_DB_HOST'), 
-        'PORT': os.environ.get('SUPABASE_DB_PORT'),
+        'NAME':os.environ.get('NEON_DB_NAME'),
+        'USER': os.environ.get('NEON_DB_USER'),
+        'PASSWORD': os.environ.get('NEON_DB_PASSWORD'),
+        'HOST': os.environ.get('NEON_DB_HOST'), 
+        'PORT': os.environ.get('NEON_DB_PORT'),
         'OPTIONS': {
             'sslmode': 'require',
         }
@@ -143,11 +143,16 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'app_semillitas.Usuario'
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_PORT =587
+
+EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : (
       

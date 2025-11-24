@@ -37,6 +37,7 @@ htmlcov/
 
 # Archivos de Git
 .git/
+.github/
 
 # Archivos del sistema operativo
 .DS_Store

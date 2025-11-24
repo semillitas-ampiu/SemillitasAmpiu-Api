@@ -26,15 +26,13 @@ class AdminList(generics.ListCreateAPIView):
             admin.save()
 
             asunto = "Registro de Usuario en el Sistema"
-            mensajeCorreo = f"""
-            Cordial Saludo <b>{admin.first_name} {admin.last_name}</b>, usted ha sido registrado
-            en el sistema de Gestión Administradores de Semillitas Ampiu Sena.
-            <br><br>nos permtimos enviar las credenciales de ingreso al sistema<br><br>
-            <b>Username:</b> {admin.username}<br>
-            <b>Password:</b> {passwordGenerado}<br>
-            La URL del sistema es: http://localhost:5173/"""
+            mensajeCorreo = f"""Cordial Saludo <b>{admin.first_name} {admin.last_name}</b>, usted ha sido registrado en el sistema de Gestión Administradores de Semillitas Ampiu Sena.<br><br>
+Nos permitimos enviar las credenciales de ingreso al sistema:<br><br>
+<b>Username:</b> {admin.username}<br>
+<b>Password:</b> {passwordGenerado}<br><br>
+La URL del sistema es: <a href="http://localhost:5173/">http://localhost:5173/</a>"""
             thread = threading.Thread(
-                target=enviarCorreo, args=(asunto, mensajeCorreo, [admin.email], None)
+                target=enviarCorreo, args=(asunto, mensajeCorreo, admin.email, None)
             )
             thread.start()
             return Response(

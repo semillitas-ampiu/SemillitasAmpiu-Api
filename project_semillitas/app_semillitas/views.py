@@ -16,28 +16,42 @@ def home(request):
 
 
 def enviarCorreo(asunto=None, mensaje=None, destinatario=None, archivo=None):
-    remitente = settings.EMAIL_HOST_USER
-    template = get_template('enviarCorreo.html')
-    contenido = template.render({'mensaje': mensaje})
-
+    import traceback
+    remitente = 'semillitasampiu@gmail.com'
+    
     try:
+        print(f"[EMAIL] Iniciando envío de correo...")
+        print(f"[EMAIL] Destinatario: {destinatario}")
+        print(f"[EMAIL] Asunto: {asunto}")
+        
+        template = get_template('enviarCorreo.html')
+        contenido = template.render({'mensaje': mensaje})
+        print(f"[EMAIL] Template renderizado correctamente")
+        
+        # Asegurar que destinatario sea una lista
+        if isinstance(destinatario, str):
+            destinatario = [destinatario]
+        
         # cuerpo en texto plano como fallback
         correo = EmailMultiAlternatives(
             subject=asunto,
-            body=mensaje or "Este correo requiere un cliente con soporte HTML.",
+            body="Este correo requiere un cliente con soporte HTML.",
             from_email=remitente,
             to=destinatario
         )
         correo.attach_alternative(contenido, "text/html")
+        print(f"[EMAIL] Email construido, enviando...")
 
         if archivo:
             correo.attach_file(archivo)
+            print(f"[EMAIL] Archivo adjunto agregado")
 
-        correo.send(fail_silently=False)
-        print("Correo enviado correctamente")
+        resultado = correo.send(fail_silently=False)
+        print(f"[EMAIL] ✓ Correo enviado correctamente. Resultado: {resultado}")
 
-    except SMTPException as e:
-        print(f"Error al enviar correo: {e}")
+    except Exception as e:
+        print(f"[EMAIL] ✗ ERROR al enviar correo: {type(e).__name__}: {str(e)}")
+        traceback.print_exc()
 
 
 @csrf_exempt
