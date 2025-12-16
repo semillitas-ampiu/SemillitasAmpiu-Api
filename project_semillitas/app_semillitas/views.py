@@ -12,7 +12,7 @@ from django.shortcuts import render
 
 # Create your views here.
 def home(request):
-    return JsonResponse({"mensaje": "¡Maktuku Semillitas!"})
+    return JsonResponse({"mensaje": "¡Maktuku Ampiu Yell!"})
 
 
 def enviarCorreo(asunto=None, mensaje=None, destinatario=None, archivo=None):
