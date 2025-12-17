@@ -30,7 +30,7 @@ class AdminList(generics.ListCreateAPIView):
 Nos permitimos enviar las credenciales de ingreso al sistema:<br><br>
 <b>Username:</b> {admin.username}<br>
 <b>Password:</b> {passwordGenerado}<br><br>
-La URL del sistema es: <a href="http://localhost:5173/">http://localhost:5173/</a>"""
+La URL del sistema es: <a href="https://glistening-druid-395662.netlify.app/">https://semillitas-ampiu.netlify.app/</a>"""
             thread = threading.Thread(
                 target=enviarCorreo, args=(asunto, mensajeCorreo, admin.email, None)
             )
