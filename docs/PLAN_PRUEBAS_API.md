@@ -9,7 +9,7 @@
 
 ## Nombre del Proyecto: API REST Semillitas Ampiu
 
-**Descripción:** API REST educativa para enseñar el idioma Ampiu. Backend Django con autenticación JWT, dos roles de usuario (Admin/Jugador) y sistema de vocabulario con niveles, palabras, ejercicios y evaluaciones.
+**Descripción:** API REST educativa para enseñar el idioma Ampiu. Backend Django con autenticación JWT, dos roles de usuario (Admin/Jugador) y sistema de vocabulario con palabras y seguimiento de progreso.
 
 ---
 
@@ -96,10 +96,10 @@
 | P02 | Crear palabra completa          | test_P02_crear_palabra_completa          | Crea una palabra con español y ampiu          | \* Ninguna                             | CRUD Palabra   | 1. POST a `/api/palabra/` con datos completos        | `{"pal_español": "hola", "pal_ampiu": "kua"}`          | Status 201, mensaje="Palabra creada correctamente." | Ninguna      | QA Team     |
 | P03 | Crear palabra español duplicado | test_P03_crear_palabra_español_duplicado | Rechaza creación cuando pal_español ya existe | \* Palabra con mismo español existente | CRUD Palabra   | 1. Crear palabra 2. Crear otra con mismo pal_español | pal_español duplicado                                  | Status 400 Bad Request                              | P02          | QA Team     |
 | P04 | Crear palabra ampiu duplicado   | test_P04_crear_palabra_ampiu_duplicado   | Rechaza creación cuando pal_ampiu ya existe   | \* Palabra con mismo ampiu existente   | CRUD Palabra   | 1. Crear palabra 2. Crear otra con mismo pal_ampiu   | pal_ampiu duplicado                                    | Status 400 Bad Request                              | P02          | QA Team     |
-| P05 | Obtener palabra ID válido       | test_P05_obtener_palabra_por_id_valido   | Obtiene datos de una palabra específica       | \* Palabra existente                   | CRUD Palabra   | 1. GET a `/api/palabra/{id}`                         | ID de palabra                                          | Status 200, id coincide                             | P02          | QA Team     |
-| P06 | Obtener palabra ID inválido     | test_P06_obtener_palabra_por_id_invalido | Retorna error cuando el ID no existe          | \* Ninguna                             | CRUD Palabra   | 1. GET a `/api/palabra/99999`                        | ID: 99999                                              | Status 404 Not Found                                | Ninguna      | QA Team     |
-| P07 | Actualizar palabra              | test_P07_actualizar_palabra              | Actualiza datos de una palabra                | \* Palabra existente                   | CRUD Palabra   | 1. PUT a `/api/palabra/{id}`                         | Nuevos valores de pal_español, pal_ampiu               | Status 200, datos actualizados                      | P02          | QA Team     |
-| P08 | Eliminar palabra                | test_P08_eliminar_palabra                | Elimina una palabra del sistema               | \* Palabra existente                   | CRUD Palabra   | 1. DELETE a `/api/palabra/{id}` 2. Verificar         | ID de palabra                                          | Status 204, GET posterior 404                       | P02          | QA Team     |
+| P07 | Obtener palabra ID válido       | test_P07_obtener_palabra_por_id_valido   | Obtiene datos de una palabra específica       | \* Palabra existente                   | CRUD Palabra   | 1. GET a `/api/palabra/{id}`                         | ID de palabra                                          | Status 200, id coincide                             | P02          | QA Team     |
+| P08 | Obtener palabra ID inválido     | test_P08_obtener_palabra_por_id_invalido | Retorna error cuando el ID no existe          | \* Ninguna                             | CRUD Palabra   | 1. GET a `/api/palabra/99999`                        | ID: 99999                                              | Status 404 Not Found                                | Ninguna      | QA Team     |
+| P09 | Actualizar palabra              | test_P09_actualizar_palabra              | Actualiza datos de una palabra                | \* Palabra existente                   | CRUD Palabra   | 1. PUT a `/api/palabra/{id}`                         | Nuevos valores de pal_español, pal_ampiu               | Status 200, datos actualizados                      | P02          | QA Team     |
+| P10 | Eliminar palabra                | test_P10_eliminar_palabra                | Elimina una palabra del sistema               | \* Palabra existente                   | CRUD Palabra   | 1. DELETE a `/api/palabra/{id}` 2. Verificar         | ID de palabra                                          | Status 204, GET posterior 404                       | P02          | QA Team     |
 
 ---
 
@@ -136,41 +136,25 @@
 | RE02 | Crear resultado completo            | test_RE02_crear_resultado_completo            | Crea resultado con todos los campos                     | \* Usuario existente  | CRUD Resultado | 1. POST a `/api/resultado/`                 | `{"usuario": 1, "puntaje": 85, "completado": true}`    | Status 201, mensaje="Resultado creado correctamente.", puntaje=85, completado=true | J02          | QA Team     |
 | RE03 | Crear resultado valores por defecto | test_RE03_crear_resultado_valores_por_defecto | Crea resultado sin puntaje ni completado (usa defaults) | \* Usuario existente  | CRUD Resultado | 1. POST sin puntaje ni completado           | `{"usuario": 1}`                                       | Status 201, puntaje=20 (default), completado=false (default)             | J02          | QA Team     |
 | RE04 | Crear resultado usuario inexistente | test_RE04_crear_resultado_usuario_inexistente | Rechaza cuando el usuario no existe                     | \* Ninguna            | CRUD Resultado | 1. POST con usuario=99999                   | `{"usuario": 99999, "puntaje": 50}`                    | Status 400 Bad Request                                                   | Ninguna      | QA Team     |
-| RE05 | Obtener resultado por ID válido     | test_RE05_obtener_resultado_por_id_valido     | Obtiene un resultado específico                         | \* Resultado existente| CRUD Resultado | 1. GET a `/api/resultado/{id}`              | ID de resultado                                        | Status 200, id coincide                                                  | RE02         | QA Team     |
-| RE06 | Obtener resultado ID inválido       | test_RE06_obtener_resultado_por_id_invalido   | Retorna error cuando el ID no existe                    | \* Ninguna            | CRUD Resultado | 1. GET a `/api/resultado/99999`             | ID: 99999                                              | Status 404 Not Found                                                     | Ninguna      | QA Team     |
-| RE07 | Actualizar resultado                | test_RE07_actualizar_resultado                | Actualiza datos de un resultado existente               | \* Resultado existente| CRUD Resultado | 1. PUT a `/api/resultado/{id}` con nuevos datos | `{"usuario": 1, "puntaje": 100, "completado": true}`   | Status 200, puntaje=100, completado=true                                  | RE02         | QA Team     |
-| RE08 | Eliminar resultado                  | test_RE08_eliminar_resultado                  | Elimina un resultado del sistema                        | \* Resultado existente| CRUD Resultado | 1. DELETE a `/api/resultado/{id}` 2. Verificar | ID del resultado                                       | Status 204, GET posterior retorna 404                                    | RE02         | QA Team     |
-| RE09 | Filtrar por usuario                 | test_RE09_filtrar_por_usuario                 | Filtra resultados por usuario (django-filter)           | \* Resultados existentes | Filtros     | 1. GET a `/api/resultado/?usuario=X`        | usuario=ID del jugador                                 | Status 200, todos los resultados tienen usuario=X                        | RE02         | QA Team     |
-| RE05 | Crear resultado usuario inexistente    | test_RE05_crear_resultado_usuario_inexistente    | Rechaza cuando el usuario no existe                     | \* Evaluación existente            | CRUD Resultado | 1. POST con usuario=99999                      | `{"evaluacion": 1, "usuario": 99999, "puntaje": 50}`                 | Status 400 Bad Request                                                             | Evaluación      | QA Team     |
-| RE06 | Obtener resultado ID válido            | test_RE06_obtener_resultado_por_id_valido        | Obtiene un resultado específico                         | \* Resultado existente             | CRUD Resultado | 1. GET a `/api/resultado/{id}`                 | ID de resultado                                                      | Status 200, id coincide                                                            | RE02            | QA Team     |
-| RE07 | Obtener resultado ID inválido          | test_RE07_obtener_resultado_por_id_invalido      | Retorna error cuando el ID no existe                    | \* Ninguna                         | CRUD Resultado | 1. GET a `/api/resultado/99999`                | ID: 99999                                                            | Status 404 Not Found                                                               | Ninguna         | QA Team     |
-| RE08 | Filtrar por usuario                    | test_RE08_filtrar_por_usuario                    | Filtra resultados por usuario                           | \* Resultados existentes           | Filtros        | 1. GET a `/api/resultado/?usuario=X`           | usuario=ID                                                           | Status 200, todos los resultados del usuario                                       | RE02            | QA Team     |
-| RE09 | Actualizar resultado                   | test_RE09_actualizar_resultado                   | Actualiza puntaje y completado                          | \* Resultado existente             | CRUD Resultado | 1. PUT a `/api/resultado/{id}`                 | `{"puntaje": 100, "completado": true, ...}`                          | Status 200, puntaje=100, completado=true                                           | RE02            | QA Team     |
-| RE10 | Eliminar resultado                     | test_RE10_eliminar_resultado                     | Elimina un resultado                                    | \* Resultado existente             | CRUD Resultado | 1. DELETE a `/api/resultado/{id}` 2. Verificar | ID de resultado                                                      | Status 204, GET posterior 404                                                      | RE02            | QA Team     |
+| RE06 | Obtener resultado por ID válido     | test_RE06_obtener_resultado_por_id_valido     | Obtiene un resultado específico                         | \* Resultado existente| CRUD Resultado | 1. GET a `/api/resultado/{id}`              | ID de resultado                                        | Status 200, id coincide                                                  | RE02         | QA Team     |
+| RE07 | Obtener resultado ID inválido       | test_RE07_obtener_resultado_por_id_invalido   | Retorna error cuando el ID no existe                    | \* Ninguna            | CRUD Resultado | 1. GET a `/api/resultado/99999`             | ID: 99999                                              | Status 404 Not Found                                                     | Ninguna      | QA Team     |
+| RE08 | Filtrar por usuario                 | test_RE08_filtrar_por_usuario                 | Filtra resultados por usuario (django-filter)           | \* Resultados existentes | Filtros     | 1. GET a `/api/resultado/?usuario=X`        | usuario=ID del jugador                                 | Status 200, todos los resultados tienen usuario=X                        | RE02         | QA Team     |
+| RE09 | Actualizar resultado                | test_RE09_actualizar_resultado                | Actualiza datos de un resultado existente               | \* Resultado existente| CRUD Resultado | 1. PUT a `/api/resultado/{id}` con nuevos datos | `{"usuario": 1, "puntaje": 100, "completado": true}`   | Status 200, puntaje=100, completado=true                                  | RE02         | QA Team     |
+| RE10 | Eliminar resultado                  | test_RE10_eliminar_resultado                  | Elimina un resultado del sistema                        | \* Resultado existente| CRUD Resultado | 1. DELETE a `/api/resultado/{id}` 2. Verificar | ID del resultado                                       | Status 204, GET posterior retorna 404                                    | RE02         | QA Team     |
 
 ---
 
 ## Matriz de Prioridades
 
-| Prioridad | Casos                                                                            | Justificación                  |
-| --------- | -------------------------------------------------------------------------------- | ------------------------------ |
-| **ALTA**  | T01, T02, J02, J03, A02, P02, R02, RE02                                          | Funcionalidad core del sistema |
-| **MEDIA** | T06, A09, A10, J10, R07, R08, RE03, RE08                                         | Lógica de negocio específica   |
+| Prioridad | Casos                                                                          | Justificación                  |
+| --------- | ------------------------------------------------------------------------------ | ------------------------------ |
+| **ALTA**  | T01, T02, J02, J03, A02, P02, R02, RE02                                        | Funcionalidad core del sistema |
+| **MEDIA** | T06, A09, A10, J10, R07, R08, RE03, RE08                                       | Lógica de negocio específica   |
 | **BAJA**  | Casos de eliminación y actualización (A07-A08, J08-J09, P09-P10, R10, RE09-RE10) | Operaciones secundarias        |
 
 ---
 
 ## Datos de Prueba
-
-### Nivel de Prueba (debe existir)
-
-```json
-{
-  "id": 1,
-  "nombre": "Nivel Test",
-  "descripcion": "Nivel para pruebas"
-}
-```
 
 ### Jugador de Prueba
 
@@ -197,8 +181,7 @@
 ```json
 {
   "pal_español": "palabra_test_TIMESTAMP",
-  "pal_ampiu": "ampiu_test_TIMESTAMP",
-  "nivel": 1
+  "pal_ampiu": "ampiu_test_TIMESTAMP"
 }
 ```
 
@@ -212,9 +195,9 @@ test/
 ├── test_token.py            # Tests de autenticación JWT (T01-T06)
 ├── test_administrador.py    # Tests CRUD de administradores (A01-A10)
 ├── test_jugador.py          # Tests CRUD de jugadores (J01-J10)
-├── test_palabra.py          # Tests CRUD de palabras (P01-P10)
+├── test_palabra.py          # Tests CRUD de palabras (P01-P04, P07-P10)
 ├── test_recoleccion.py      # Tests CRUD de recolecciones (R01-R10)
-├── test_resultado.py        # Tests CRUD de resultados (RE01-RE10)
+├── test_resultado.py        # Tests CRUD de resultados (RE01-RE04, RE06-RE10)
 ```
 
 ---
