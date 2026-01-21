@@ -17,7 +17,7 @@ def home(request):
 
 def enviarCorreo(asunto=None, mensaje=None, destinatario=None, archivo=None):
     import traceback
-    remitente = 'semillitasampiu@gmail.com'
+    remitente = settings.DEFAULT_FROM_EMAIL
     
     try:
         print(f"[EMAIL] Iniciando envío de correo...")
